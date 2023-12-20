@@ -1,0 +1,5 @@
+express
+nodemon
+dotenv
+mysql2
+jsonwebtoken
