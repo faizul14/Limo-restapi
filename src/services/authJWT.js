@@ -2,21 +2,21 @@ const jwt = require('jsonwebtoken');
 const secretKey = process.env.SECRETKEY
 
 const generateJWT = (dataUser) => {
-    if(!dataUser.username && !dataUser.email && !dataUser.id){
+    if (!dataUser.username && !dataUser.email && !dataUser.id) {
         return null
     }
 
     const payload = {
-        userId : dataUser.id,
+        userId: dataUser.id,
         username: dataUser.username,
         userEmail: dataUser.email,
     }
 
     const option = {
-        expiresIn : '1d',
+        expiresIn: '1d', // expired 1 day
     }
 
-    const token = jwt.sign(payload, secretKey, option )
+    const token = jwt.sign(payload, secretKey, option)
     return token
 }
 

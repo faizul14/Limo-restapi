@@ -1,5 +1,6 @@
 const modelsuser = require('../../models/user/modelsUser');
 const authJWT = require('../../services/authJWT')
+const encript = require('../../services/enkripsiPass')
 
 const signup = async (req, res) => {
     const body = req.body
@@ -39,6 +40,14 @@ const login = async (req, res) => {
         if (!rows[0].username || !rows[0].email || !rows[0].id) {
             res.status(401).json({
                 message: 'Login failed, username not found',
+                code: 401
+            })
+            return
+        }
+        const enkripsiPass = encript.decript(rows[0].password)
+        if (enkripsiPass !== dataLogin.password) {
+            res.status(401).json({
+                message: 'Login failed, username or password wrong',
                 code: 401
             })
             return
