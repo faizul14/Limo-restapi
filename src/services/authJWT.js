@@ -13,7 +13,7 @@ const generateJWT = (dataUser) => {
     }
 
     const option = {
-        expiresIn : '1h',
+        expiresIn : '1d',
     }
 
     const token = jwt.sign(payload, secretKey, option )
