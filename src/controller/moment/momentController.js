@@ -24,6 +24,30 @@ const getAllMoment = async (req, res) => {
     }
 }
 
+const createMoment = async (req, res) => {
+    const dataMoment = req.body
+    if (!dataMoment.userid || !dataMoment.moment || !dataMoment.deskripsi || !dataMoment.time || !dataMoment.feel) {
+        res.status(401).json({
+            message: 'Data body is empty, cannot create moment',
+            code: 401
+        })
+    }
+    try {
+        await momentModels.createMoment(dataMoment)
+        res.status(201).json({
+            message: 'Create moment succes',
+            code: 201,
+            data: dataMoment,
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: 'Server error',
+            code: 500,
+            error: error,
+        })
+    }
+}
+
 const updateMoment = async (req, res) => {
     const bodyData = req.body
     const { idMoment } = req.params
@@ -63,6 +87,7 @@ const deleteMoment = async (req, res) => {
 module.exports = {
     testControlles,
     getAllMoment,
+    createMoment,
     updateMoment,
     deleteMoment
 }

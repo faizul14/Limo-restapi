@@ -4,6 +4,7 @@ const momentcontroller = require('../../controller/moment/momentController')
 
 router.get('/tes', momentcontroller.testControlles)
 router.get('/', momentcontroller.getAllMoment)
+router.post('/', momentcontroller.createMoment)
 router.patch('/:idMoment', momentcontroller.updateMoment)
 router.delete('/:idMoment', momentcontroller.deleteMoment)
 
