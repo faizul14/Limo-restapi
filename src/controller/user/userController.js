@@ -1,6 +1,7 @@
-const modelsuser = require('../../models/user/modelsUser');
-const authJWT = require('../../services/authJWT')
-const encript = require('../../services/enkripsiPass')
+// const modelsuser = require('../../models/user/modelsUser');
+const modelsuser = require('../../models/user/mongodb/modelsUser');
+const authJWT = require('../../services/authJWT');
+const encript = require('../../services/enkripsiPass');
 
 const signup = async (req, res) => {
     const body = req.body
@@ -14,7 +15,7 @@ const signup = async (req, res) => {
         res.status(400).json({
             message: 'SignUp failed',
             code: 400,
-            error: error
+            error: error.message
         })
     }
 }
@@ -34,17 +35,20 @@ const login = async (req, res) => {
         return
     }
     try {
-        const [rows] = await modelsuser.login(dataLogin)
-        console.log(`Data user login ${rows[0].id}`);
+        const resultLogin = await modelsuser.login(dataLogin);
 
-        if (!rows[0].username || !rows[0].email || !rows[0].id) {
+        // this use if we used mysql
+        // const [rows] = await modelsuser.login(dataLogin)
+        // console.log(`Data user login ${rows[0].id}`);
+
+        if (!resultLogin[0].username || !resultLogin[0].email || !resultLogin[0].id) {
             res.status(401).json({
                 message: 'Login failed, username not found',
                 code: 401
             })
             return
         }
-        const enkripsiPass = encript.decript(rows[0].password)
+        const enkripsiPass = encript.decript(resultLogin[0].password)
         if (enkripsiPass !== dataLogin.password) {
             res.status(401).json({
                 message: 'Login failed, username or password wrong',
@@ -52,12 +56,12 @@ const login = async (req, res) => {
             })
             return
         }
-        const token = authJWT.generateJWT(rows[0])
+        const token = authJWT.generateJWT(resultLogin[0])
         res.status(200).json({
             message: 'Login succes',
             code: 200,
             data: {
-                user: rows[0].username,
+                user: resultLogin[0].username,
                 token: token
             }
         })

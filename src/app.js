@@ -13,6 +13,8 @@ const middlewareError = require('../src/middleware/middlewareErrorLog')
 const middlewareTrackerPatch = require('../src/middleware/middlewareTrackerPatch')
 // import middleware auth
 const middlewareAuth = require('../src/middleware/middlewareAuth')
+// import mongo
+const mongodb = require('../src/config/mongodb');
 
 // get port from environment
 const PORT = process.env.PORT
